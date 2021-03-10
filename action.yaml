@@ -1,0 +1,54 @@
+name: Merge-Assemble-Release
+
+# only trigger on pull request closed events
+on:
+  pull_request:
+    branches : 
+      - main
+    types: [ closed ]
+
+jobs:
+  merge_job:
+    # this job will only run if the PR has been merged
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install trestle
+        run: pip install compliance-trestle
+
+      - name: Assemble
+        run: |
+          echo $(ls)
+          trestle assemble catalog -t
+          trestle assemble profile -t
+          trestle assemble target-definition -t
+          trestle assemble component-definition -t
+          trestle assemble system-security-plan -t
+          trestle assemble assessment-plan -t
+          trestle assemble assessment-results -t
+          trestle assemble plan-of-action-and-milestones -t
+          
+      - name: Push commit
+        run: |
+          git config --global user.name 'trestle assemble-release bot'
+          git config --global user.email 'bot@trestle-action'
+          git add -A
+          git commit -am "Automated assemble"
+          git push origin main
+      - name: Semantic release
+        run:  |
+          pip install python-semantic-release
+          touch setup.cfg
+          list=``
+          filenames=`ls dist/*/*.json`
+          for eachfile in $filenames; do list="${list}$eachfile:\\\"version\\\": \"(\d+\.\d+[\.d+]?)\","; done
+          echo $'[semantic_release]\nversion_pattern ='"${list%?}">setup.cfg
+          cat setup.cfg
+          semantic-release publish
