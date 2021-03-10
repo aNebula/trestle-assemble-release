@@ -2,6 +2,10 @@ name: Merge-Assemble-Release
 author: Nebula Alam(aNebula)
 description: On merge of PR to main branch, assemble oscal models, bump version and release
 
+branding:
+  icon: package
+  color: blue
+
 # only trigger on pull request closed events
 on:
   pull_request:
