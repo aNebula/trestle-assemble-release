@@ -1,4 +1,6 @@
 name: Merge-Assemble-Release
+author: Nebula Alam(aNebula)
+description: On merge of a PR to main branch on a trestle project: validate and assemble top level oscal models, bump version automatically from commit message and release.
 
 # only trigger on pull request closed events
 on:
