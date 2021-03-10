@@ -13,5 +13,5 @@ The version tag has to be semantic versioning, i.e. x.x.x (major.minor.patch), a
 ## Usage
 Import this action into your workflow using `uses` key:
 ```
-uses: peter-evans/create-pull-request@v2
+uses: aNebula/trestle-assemble-release
 ```
