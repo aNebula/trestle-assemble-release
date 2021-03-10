@@ -1,4 +1,4 @@
-name: Merge-Assemble-Release
+name: trestle-assemble-release
 author: Nebula Alam(aNebula)
 description: On merge of PR to main branch, assemble oscal models, bump version and release
 
